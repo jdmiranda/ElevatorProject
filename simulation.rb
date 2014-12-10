@@ -14,6 +14,14 @@ class Simulation
     @total = 0
   end
 
+  def multirun(nbr_runs, prefix, strategy)
+
+    files = Dir.glob("#{prefix}*")
+    runs = files[0..nbr_runs]
+    runs.each {|f| run(f,strategy)}
+  end
+
+
   def run(file, strategy)
     #puts 'starting to run'
     gen_data(file)
@@ -21,12 +29,6 @@ class Simulation
     @strat = Strategy.new(@elevator, strategy)
     @elevator.set_floor(1, 1, @max_floor)
     start_running
-    report_analytics
-  end
-
-  def report_analytics
-    #puts 'reporting average time'
-    puts self.average_wait_time
   end
 
   def gen_data(file)
@@ -55,19 +57,19 @@ class Simulation
 
 
   def average_wait_time
-    @total/@people_count
+    (@total/@people_count).to_f.round(2)
   end
 
 
   def call(person)
-    #puts 'call person'
+    puts "#{person.id} calls from floor #{person.origin}"
     @elevator.callers.push(person)
     @sleepers.delete(person)
 
   end
 
   def debark(person)
-    #puts 'debark person'
+    puts "#{person.id} debarks onto floor #{person.dest}"
     @elevator.passengers.delete(person)
     @people.push(person)
     person.arrival_time(@time)
@@ -76,13 +78,14 @@ class Simulation
   end
 
   def board(person)
-    #puts 'board person'
+    puts "#{person.id} boards from floor #{person.origin}"
     @elevator.passengers.push(person)
     @elevator.callers.delete(person)
   end
 
   def running
     #puts 'running'
+    puts "Time #{@time}: Floor #{@elevator.floor}"
     @sleepers.each {|person| if person.call_time.eql?(time) or person.call_time < @time then call(person) end}
     @elevator.callers.each {|person| if person.origin.eql?(@elevator.floor) then board(person) end}
     @elevator.passengers.each {|person| if person.dest.eql?(@elevator.floor) then debark(person) end}
@@ -113,7 +116,7 @@ class Simulation
   end
 
   def start_running
-    puts 'start running'
+    #puts 'start running'
     until self.over? do running end
   end
 end

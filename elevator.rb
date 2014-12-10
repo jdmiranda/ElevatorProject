@@ -35,11 +35,14 @@ class Elevator
   def go_up
    # puts 'going up'
     @floor += 1 if @floor < @max_floor
+    if @passengers.any? then  @passengers.each{|p| p.cur_floor = @floor} end
+
   end
 
   def go_down
    # puts 'going down'
     @floor = @floor - 1 if @floor > @min_floor
+    if @passengers.any? then  @passengers.each {|p| p.cur_floor = @floor} end
   end
 
   def self.remove_passenger(person)
@@ -49,6 +52,17 @@ class Elevator
   def self.add_caller(person)
     @callers.push(person)
   end
+
+  def callers_time_till_home
+    if @callers.any? then @callers.each.inject(0) {|sum, p| sum + p.time_till_home} end
+  end
+
+  def pass_time_till_home
+    if @passengers.any? then @callers.each.inject(0) {|sum, p| sum + p.time_till_home} end
+  end
+
+
+
 end
 end
 

@@ -17,8 +17,8 @@ module StrategyMod
 
     def execute
       #puts 'execute'
-      get_strat1 if strategy.equal?(:strat1)
-      get_strat2 if strategy.equal?(:strat2)
+      get_strat1 if strategy.equal?(:strategy1)
+      get_strat2 if strategy.equal?(:strategy2)
     end
 
 
@@ -29,6 +29,17 @@ module StrategyMod
       end
     end
 
+    def get_strat2
+       if @elevator.passengers.any?  and @elevator.pass_time_till_home > 0 then @elevator.go_up
+         elsif @elevator.passengers.any? then @elevator.go_down
+         elsif @elevator.callers.any? and @elevator.callers_time_till_home > 0 then @elevator.go_up
+         elsif @elevator.callers.any? then @elevator.go_down
+         else get_strat1
+       end
+    end
+
+
+=begin
     def get_strat2
       f = @elevator.floor.to_i
 
@@ -60,6 +71,7 @@ module StrategyMod
 
       puts " time up #{up_time} down time #{down_time} floor #{@elevator.floor}"
     end
+=end
 
 
 

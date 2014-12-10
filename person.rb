@@ -1,6 +1,6 @@
 module PersonMod
 class Person
-  attr_reader :call_time, :origin, :dest, :id, :total_time, :arrival_time, :home
+  attr_reader :call_time, :origin, :dest, :id, :total_time, :arrival_time, :home, :cur_floor
 
   def initialize(id, call, origin, dest)
     @id = id
@@ -9,6 +9,7 @@ class Person
     @origin = origin
     @dest = dest
     @total_time = 0
+    @cur_floor = origin
 
     #puts 'init person'
   end
@@ -41,6 +42,14 @@ class Person
     #puts 'setting home'
     @home = true
     self.get_total_time
+  end
+
+  def time_till_home
+      @dest - @cur_floor
+  end
+
+  def cur_floor=(other)
+    @cur_floor = other
   end
 
 end
