@@ -48,7 +48,7 @@ class Simulation
     @people_count = a.size
     a.each do |element|
       e = element
-      person = Person.new(e[0], e[1], e[2], e[3])
+      person = Person.new(e[0].to_i, e[1].to_i, e[2].to_i, e[3].to_i)
       @sleepers.push(person)
       end
   end
@@ -90,9 +90,6 @@ class Simulation
     @strat.execute
     @time += 1
 
-    #puts "sleepers: #{@sleepers.size} passengers: #{@elevator.passengers.size} time: #{@time} "
-    #puts "callers: #{@elevator.callers.size} people: #{@people.size} floor: #{@elevator.floor}"
-   # sleep(2)
   end
 
   def everyone_awake?

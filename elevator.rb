@@ -7,14 +7,14 @@ class Elevator
 
 
   def initialize
-    puts 'init elevator'
+    #puts 'init elevator'
     @callers = []
     @passengers = []
     @direction = 'up'
   end
 
   def set_floor(floor, min, max)
-    puts 'setting floor'
+    #puts 'setting floor'
     @floor = floor
     @max_floor = max.to_i
     @min_floor = min
